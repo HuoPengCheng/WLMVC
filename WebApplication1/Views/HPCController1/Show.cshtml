@@ -9,6 +9,13 @@
         <tr>
             <td>姓名：</td>
             <td><input id="Text1" type="text" ng-model="name1" /></td>
+            <td>性别：</td>
+            <td>
+                <select id="Select1" ng-model="xl">
+                    <option>男</option>
+                    <option>女</option>
+                </select>
+            </td>
             <td><input id="Button1" type="button" value="查询" ng-click="Cha()" /></td>
             <td><input id="Button1" type="button" value="添加" ng-click="Add()" /></td>
         </tr>
@@ -24,10 +31,12 @@
         </thead>
         <tbody>
             <tr ng-repeat="x in names">
+                <td><input id="Checkbox1" type="checkbox" ng-model="" /></td>
                 <td>{{x.name}}</td>
                 <td>{{x.age}}</td>
                 <td>{{x.sex}}</td>
-                <td><input id="Button1" type="button" value="删除" ng-click="Del(x.id)" />                
+                <td>
+                    <input id="Button1" type="button" value="删除" ng-click="Del(x.id)" />
                     <input id="Button1" type="button" value="修改" ng-click="Update(x.id)" />
                 </td>
             </tr>
@@ -49,7 +58,7 @@
 
             $scope.Del = function (id) {
                 if (confirm('确定要删除！！')) {
-                    $http.get('https://localhost:44343/api/HPC/Show', {
+                    $http.get('https://localhost:44343/api/HPC/Del', {
                         params: {
                             id: id
                         }
@@ -95,12 +104,13 @@
                 //        alert('删除失败！！');
                 //    }
             };
-                    
+
             $scope.Cha = function () {
 
                 $http.get('https://localhost:44343/api/HPC/Show', {
                     params: {
-                        name: $scope.name1
+                        name: $scope.name1,
+                        sex:$scope.xl
                     }
                 }).then(function (response) {
                     $scope.names = response.data;
@@ -123,11 +133,10 @@
             };
             $scope.Update = function (id) {
                 sessionStorage.setItem("id", id);
-                alert(sessionStorage.getItem('id'))
-                location.href = 'https://localhost:44332/HPCController1/Add';
-                
+                location.href = 'https://localhost:44332/HPCController1/Update';
+
             };
-                });
+        });
 
     </script>
 }

@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewData["Title"] = "Update";
+}
+<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+<h1>Update</h1>
+<div ng-app="app" ng-controller="hah3">
+    <table class="table table-bordered">
+        <tr>
+            <td>姓名：</td>
+            <td><input id="Text1" type="text" ng-model="name" /></td>
+        </tr>
+        <tr>
+            <td>性别：</td>
+            <td><input id="Text1" type="text" ng-model="sex" /></td>
+        </tr>
+        <tr>
+            <td>年龄：</td>
+            <td><input id="Text1" type="text" ng-model="age"/></td>
+        </tr>
+        <tr>
+            <td><input id="Button1" type="button" value="保存" ng-click="Update()" /></td>
+            <td><input id="Button1" type="button" value="取消" ng-click="QuXiao()"/></td>
+        </tr>
+    </table>
+</div>
+@section scripts{
+    <script>
+        var app = angular.module('app', []);
+        app.controller('hah3', function ($scope, $http) {
+            var id = sessionStorage.getItem('id');
+            $http.get('https://localhost:44343/api/HPC/Fan?id=' + id)
+                .then(function (i) {
+                    $scope.name = i.data[0].name;
+                    $scope.sex = i.data[0].sex;
+                    $scope.age = i.data[0].age;
+                })
+            
+            $scope.Update = function () {
+                $http.get('https://localhost:44343/api/HPC/Update', {
+                    params: {
+                        id:id,
+                        name: $scope.name,
+                        age: $scope.age,
+                        sex: $scope.sex
+                    }
+                }).then(function (i) {
+                    i = parseInt(i.data);
+                    if (i > 0) {
+                        alert('修改成功！！');
+                        location.href = 'https://localhost:44332/HPCController1/Show';
+                    }
+                    else {
+                        alert('修改失败！！');
+                    }
+                })
+            };
+        })
+    </script>
+
+
+}
+
+
