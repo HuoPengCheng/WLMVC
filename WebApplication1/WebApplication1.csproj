@@ -4,4 +4,29 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\angular-1.5.8\i18n\ngLocale\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\react-16.0.0\.github\ISSUE_TEMPLATE.md" />
+    <None Include="wwwroot\react-16.0.0\.github\PULL_REQUEST_TEMPLATE.md" />
+    <None Include="wwwroot\react-16.0.0\src\node_modules\react-art\index.js" />
+    <None Include="wwwroot\react-16.0.0\src\node_modules\react-dom\index.js" />
+    <None Include="wwwroot\react-16.0.0\src\node_modules\react-dom\server.browser.js" />
+    <None Include="wwwroot\react-16.0.0\src\node_modules\react-dom\server.js" />
+    <None Include="wwwroot\react-16.0.0\src\node_modules\react-dom\test-utils.js" />
+    <None Include="wwwroot\react-16.0.0\src\node_modules\react-dom\unstable-native-dependencies.js" />
+    <None Include="wwwroot\react-16.0.0\src\node_modules\react-native\index.js" />
+    <None Include="wwwroot\react-16.0.0\src\node_modules\react-noop-renderer\index.js" />
+    <None Include="wwwroot\react-16.0.0\src\node_modules\react-test-renderer\index.js" />
+    <None Include="wwwroot\react-16.0.0\src\node_modules\react-test-renderer\shallow.js" />
+    <None Include="wwwroot\react-16.0.0\src\node_modules\react\index.js" />
+    <None Include="wwwroot\react-16.0.0\src\node_modules\README.md" />
+  </ItemGroup>
+
 </Project>

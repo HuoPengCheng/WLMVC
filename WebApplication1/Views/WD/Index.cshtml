@@ -1,0 +1,181 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>员工首页</title>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/layui-v2.5.6/layui/layui.js"></script>
+    <script src="~/angular-1.5.8/angular.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <link href="~/layui-v2.5.6/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+    <script>
+        //文档加载函数
+        $(function () {
+
+        })
+
+        //去添加
+        function GoAdd() {
+            location.href = "/WD/Add";
+        }
+
+        ////去修改
+        //function GoUpt(wId) {
+        //    location.href = "/WD/Upt?WId=" + wId;
+        //}
+
+        //去回收站
+        function GoRe() {
+            location.href = "/WD/RE";
+        }
+
+    </script>
+</head>
+<body>
+    <h2 style="text-align:center">员工首页</h2>
+    <br />
+    <br />
+    <div class="layui-form" style="float:left;width:70%;margin-left:200px">
+        <span>
+            <input type="button" value="添加员工" class="btn btn-outline-success" onclick="GoAdd()" style="float:right" />
+        </span>
+        @*<span>
+                <input type="button" value="回收站" class="btn btn-outline-primary" onclick="GoRe()" style="float:right" />
+            </span>*@
+    </div>
+    <br />
+    <br />
+    <div id="main" style="text-align:center;width:70%;margin-left:200px">
+        @*<table class="layui-table" lay-skin="line" style="text-align:center;width:70%;margin-left:200px">
+                <thead>
+                    <tr>
+                        <td>员工编号</td>
+                        <td>部门名称</td>
+                        <td>员工名称</td>
+                        <td>员工年龄</td>
+                        <td>员工性别</td>
+                        <td>记录操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>员工编号</td>
+                        <td>部门名称</td>
+                        <td>员工名称</td>
+                        <td>员工年龄</td>
+                        <td>员工性别</td>
+                        <td>
+                            <input type="button" value="删除" class="btn btn-outline-dark" onclick="GoRe()" style="float:right" />
+                            <input type="button" value="修改" class="btn btn-outline-dark" onclick="GoRe()" style="float:right" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>*@
+    </div>
+    <script type="text/babel">
+        //type="text/babel"
+        class Work extends React.Component {
+            constructor(props) {
+                super(props);
+                //在state设置两个属性，以便后续通过state对象来对其进行修改
+                this.state = { List: [] };
+                //绑定加载事件
+                this.componentDidMount = this.componentDidMount.bind(this);
+            }
+
+            componentDidMount() {
+                //接下来操作state时上下文对象发生改变，此处拿到操作句柄
+                var that = this;
+                //ajax请求
+                this.serverRequest = $.ajax({
+                    url: this.props.source,
+                    type: 'get',
+                    dataType: 'json',
+                    success: function (result) {
+                        console.log(result);
+
+                        var lastGist = result;
+                        //此处的上下文发生改变，this的指针指向发生了变化，通过上述定义的that来操作
+                        that.setState({
+                            List: result,
+                        })
+                    }
+                })
+            }
+
+            Del(WId) {
+                const insertWork = "https://localhost:44343/api/DelWorks?WId=" + WId
+                fetch(insertWork, { method: "get" })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data)
+                        this.setState({
+                            List: this.state.List
+                        })
+                        if (data > 0) {
+                            alert("删除成功");
+                            window.location.href = "/WD/Index";
+                        }
+                    })
+            }
+
+            Upt(WId) {
+                window.location.href = "/WD/Upt?WId=" + WId;
+            }
+
+            //卸载React组件时，把多余请求关闭，以免影响其他框架或组件的操作
+            componentWillUnmount() {
+                this.serverRequest.abort();
+            }
+
+            render() {
+                return (
+                    <table className="layui-table" lay-skin="line">
+                        <thead>
+                            <tr>
+                                <td>员工编号</td>
+                                <td>部门名称</td>
+                                <td>员工名称</td>
+                                <td>员工年龄</td>
+                                <td>记录操作</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.List.map((item, index) => {
+                                return (
+                                    <tr key={index}>
+                                        <td>{item.wId}</td>
+                                        <td>{item.dName}</td>
+                                        <td>{item.wName}</td>
+                                        <td>{item.wAge}</td>
+                                        <td>
+                                            <input type="button" value="删除" class="btn btn-outline-dark" onClick={this.Del.bind(this, item.wId)} />
+                                            <input type="button" value="修改" class="btn btn-outline-dark" onClick={this.Upt.bind(this, item.wId)} />
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                );
+            }
+        }
+
+        ReactDOM.render(
+            <Work source="https://localhost:44343/api/GetWorkandDeps" />,
+            document.getElementById('main')
+        );
+
+    </script>
+</body>
+</html>
