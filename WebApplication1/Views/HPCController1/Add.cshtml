@@ -20,8 +20,8 @@
             <td><input id="Text1" type="text" ng-model="sex" /></td>
         </tr>
         <tr>
-            <td><input id="Button1" type="button" value="取消" ng-click="QuXiao()" /></td>
             <td><input id="Button1" type="button" value="确定" ng-click="Add()" /></td>
+            <td><input id="Button1" type="button" value="取消" ng-click="QuXIao()" /></td>
         </tr>
     </table>
 </div>
@@ -48,6 +48,9 @@
                 }
             })
         };
+        $scope.QuXIao = function () {
+            location.href = 'https://localhost:44332/HPCController1/Show';
+        }
     })
 </script>
     
