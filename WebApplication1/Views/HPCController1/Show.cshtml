@@ -23,6 +23,7 @@
     <table class="table table-bordered">
         <thead>
             <tr>
+                <td><input id="Checkbox1" type="checkbox"  /></td>
                 <td>姓名</td>
                 <td>年龄</td>
                 <td>性别</td>
@@ -31,7 +32,7 @@
         </thead>
         <tbody>
             <tr ng-repeat="x in names">
-                <td><input id="Checkbox1" type="checkbox" ng-model="" /></td>
+                <td><input id="Checkbox1" type="checkbox"/></td>
                 <td>{{x.name}}</td>
                 <td>{{x.age}}</td>
                 <td>{{x.sex}}</td>
