@@ -1,0 +1,144 @@
+﻿
+@{
+    ViewData["Title"] = "Show";
+}
+<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+<h1>Show</h1>
+<div ng-app="myApp" ng-controller="ha1">
+    <table class="table table-bordered">
+        <tr>
+            <td>姓名：</td>
+            <td><input id="Text1" type="text" ng-model="name1" /></td>
+            <td>性别：</td>
+            <td>
+                <select id="Select1" ng-model="xl">
+                    <option>男</option>
+                    <option>女</option>
+                </select>
+            </td>
+            <td><input id="Button1" type="button" value="查询" ng-click="Cha()" /></td>
+            <td><input id="Button1" type="button" value="添加" ng-click="Add()" /></td>
+        </tr>
+    </table>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <td><input id="Checkbox1" type="checkbox"  /></td>
+                <td>姓名</td>
+                <td>年龄</td>
+                <td>性别</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="x in names">
+                <td><input id="Checkbox1" type="checkbox"/></td>
+                <td>{{x.name}}</td>
+                <td>{{x.age}}</td>
+                <td>{{x.sex}}</td>
+                <td>
+                    <input id="Button1" type="button" value="删除" ng-click="Del(x.id)" />
+                    <input id="Button1" type="button" value="修改" ng-click="Update(x.id)" />
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+</div>
+@section scripts{
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('ha1', function ($scope, $http) {
+            $http({
+                method: 'get',
+                url: 'https://localhost:44343/api/HPC/Show',
+                dataType: 'json',
+            }).then(function (response) {
+                $scope.names = response.data;
+            });
+
+            $scope.Del = function (id) {
+                if (confirm('确定要删除！！')) {
+                    $http.get('https://localhost:44343/api/HPC/Del', {
+                        params: {
+                            id: id
+                        }
+                    }).then(function (i) {
+                        i = parseInt(i.data);
+                        if (i > 0) {
+                            alert('删除成功！！');
+                            $http({
+                                method: 'get',
+                                url: 'https://localhost:44343/api/HPC/Show',
+                                dataType: 'json',
+                            }).then(function (response) {
+                                $scope.names = response.data;
+                            });
+                        }
+                        else {
+                            alert('删除失败');
+                        }
+                    })
+                }
+                else {
+                    alert('取消删除')
+                }
+
+
+                //$http({
+                //    method: 'get',
+                //    url: 'https://localhost:44343/api/HPC/Del?id=' + id,
+                //    dataType: 'json',
+                //}).then(function (i) {
+                //    i =parseInt(i.data);
+                //    if (i > 0) {
+                //        alert('删除成功！！');
+                //        $http({
+                //            method: 'get',
+                //            url: 'https://localhost:44343/api/HPC/Show',
+                //            dataType: 'json',
+                //        }).then(function (response) {
+                //            $scope.names = response.data;
+                //        });
+                //    }
+                //    else {
+                //        alert('删除失败！！');
+                //    }
+            };
+
+            $scope.Cha = function () {
+
+                $http.get('https://localhost:44343/api/HPC/Show', {
+                    params: {
+                        name: $scope.name1,
+                        sex:$scope.xl
+                    }
+                }).then(function (response) {
+                    $scope.names = response.data;
+                })
+
+
+                //var data = JSON.stringify($scope.name1);
+                //$http({
+                //    method: 'get',
+                //    url: 'https://localhost:44343/api/HPC/Show',
+                //    dataType: 'json',
+                //    data: $.param({ name: data })
+                //}).then(function (response) {
+                //    $scope.names = response.data;
+                //});
+            };
+
+            $scope.Add = function () {
+                location.href = 'https://localhost:44332/HPCController1/Add';
+            };
+            $scope.Update = function (id) {
+                sessionStorage.setItem("id", id);
+                location.href = 'https://localhost:44332/HPCController1/Update';
+
+            };
+        });
+
+    </script>
+}
+
