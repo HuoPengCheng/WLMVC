@@ -56,10 +56,12 @@
                     <div className="layui-row layui-col-space2">
                         <div className="layui-col-md2">
                             <label>姓名</label>    <input type="text" id="Name" name="Name" required lay-verify="required" placeholder="姓名" className="layui-input" ref={name => this.name = name} />
+                            @*this.name=name/this.name指的是当前类的属性，后一个name是构造函数的参数*@
                         </div>
                         <div className="layui-col-md2">
                             <label>性别</label>    <input type="text" id="Sex" name="Sex" required lay-verify="required" placeholder="性别" className="layui-input" ref={sex => this.sex = sex} />
                         </div>
+                                                                                                                                                      @*this关键字用于引用当前对象，不能进行赋值，是类中的属性赋值*@     
                         <div className="layui-col-md2">
                             <label>年龄</label>    <input type="text" id="Age" name="Age" required lay-verify="required" placeholder="年龄" className="layui-input" ref={age => this.age = age} />
                         </div>

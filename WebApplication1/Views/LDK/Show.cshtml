@@ -18,15 +18,17 @@
 </head>
 <body>
 
-    <div id="example"></div>
+    <div id="example"></div>@*//所有的数据都存放这Example中控件显示未知节点的ID*@
 
-    <script type="text/babel">
-        //type="text/babel"
+    <script type="text/babel">@*需要JSX转换成js文件*@
+        //type="text/babel"     @*class里面UserGist，需要开头字母大写，否则预编译不通过*@
+        @*extends是继承子类，其次React.Component是提供组件*@
+
         class UserGist extends React.Component {
         constructor(props) {
-        super(props);
+        super(props);@*super是指向调用父类*@
         //在state设置两个属性，以便后续通过state对象来对其进行修改
-        this.state = {List:[]};
+        this.state = {List:[]};@*this可以调用其父类*@
         //绑定挂载事件
         this.componentDidMount = this.componentDidMount.bind(this);
         }
@@ -124,7 +126,7 @@
             <table className="table table-bordered">
                 <thead>
                     <tr>
-                        
+
                         <td>姓名</td>
                         <td>性别</td>
                         <td>年龄</td>
@@ -139,7 +141,7 @@
                     return (
 
                     <tr key={index}>
-                        
+
                         <td>{item.name}</td>
                         <td>{item.sex}</td>
                         <td>{item.age}</td>
@@ -155,7 +157,7 @@
             </table>
 
             @*{this.state.date[0].userName} 用户最新的 Gist 共享地址：
-            <a href={this.state.lastGistUrl} rel="nofollow">{this.state.lastGistUrl}</a>*@
+                <a href={this.state.lastGistUrl} rel="nofollow">{this.state.lastGistUrl}</a>*@
         </div>
         );
         }
@@ -163,7 +165,7 @@
 
         ReactDOM.render(
         <UserGist source="https://localhost:44343/api/LDK/Show" />,@*//程序员自定义编写的控件*@
-        document.getElementById('example')@*//所有的数据都存放这Example中控件显示未知节点的ID*@
+        document.getElementById('example')
         );
     </script>
 
