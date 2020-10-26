@@ -3,6 +3,8 @@
     ViewData["Title"] = "Update";
 }
 
+<h1>Update</h1>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -54,20 +56,20 @@
 
 
         UptUser(){
-
-        const insertUser = "https://localhost:44343/api/PLSt/Put?Pname="+this.pname.value+"&Psex="+this.psex.value+"&Phao="+this.phao.value+"&Ptele="+this.ptele.value+"&Pid="+@ViewBag.pid
+        
+        const insertUser = "https://localhost:44343/api/LDK/Update?name="+this.name.value+"&sex="+this.sex.value+"&age="+this.age.value+"&id="+9
         fetch(insertUser,{method:"post"})
         .then(response=>response.json())
         .then(data=>{
         console.log(data)
         if (data>0) {
-        window.location.href = "https://localhost:44332/PLStMVC/Index";
+        window.location.href = "https://localhost:44332/LDK/Show";
         }
         })
 
 
         }
-        
+
 
         render(){
         return (
@@ -77,17 +79,15 @@
                 <div className="layui-field-box">
                     <div className="layui-row layui-col-space2">
                         <div className="layui-col-md2">
-                            <label>姓名</label>    <input type="text" id="pname" name="pname" required lay-verify="required" placeholder="姓名" className="layui-input" ref={pname => this.pname = pname} />
+                            <label>姓名</label>    <input type="text" id="name" name="name" required lay-verify="required" placeholder="姓名" className="layui-input" ref={name => this.name = name} />
                         </div>
                         <div className="layui-col-md2">
-                            <label>性别</label>    <input type="text" id="psex" name="psex" required lay-verify="required" placeholder="性别" className="layui-input" ref={psex => this.psex = psex} />
+                            <label>性别</label>    <input type="text" id="sex" name="sex" required lay-verify="required" placeholder="性别" className="layui-input" ref={sex => this.sex = sex} />
                         </div>
                         <div className="layui-col-md2">
-                            <label>身份编号</label>    <input type="text" id="phao" name="phao" required lay-verify="required" placeholder="身份编号" className="layui-input" ref={phao => this.phao = phao} />
+                            <label>年龄</label>    <input type="text" id="age" name="age" required lay-verify="required" placeholder="身份编号" className="layui-input" ref={age => this.age = age} />
                         </div>
-                        <div className="layui-col-md2">
-                            <label>联系电话</label>    <input type="text" id="ptele" name="ptele" required lay-verify="required" placeholder="联系电话" className="layui-input" ref={ptele => this.ptele = ptele} />
-                        </div>
+
 
                         <hr className="layui-bg-green" />
 
@@ -95,7 +95,7 @@
 
                         <div className="layui-col-md1">
                             <button id="btn2" className="layui-btn" onClick={this.UptUser.bind(this)}>
-                              修改
+                                修改
                             </button>
                         </div>
                     </div>
@@ -106,7 +106,7 @@
         }
         }
         ReactDOM.render(
-        <CrudComponent source="https://localhost:44343/api/PLSt/GetSS" />,document.getElementById("cun"))
+        <CrudComponent source="https://localhost:44343/api/LDK/Fan" />,document.getElementById("cun"))
     </script>
 </body>
 </html>

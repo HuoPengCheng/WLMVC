@@ -1,7 +1,8 @@
 ﻿
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Show";
 }
+
 
 
 <!DOCTYPE html>
@@ -17,15 +18,17 @@
 </head>
 <body>
 
-    <div id="example"></div>
+    <div id="example"></div>@*//所有的数据都存放这Example中控件显示未知节点的ID*@
 
-    <script type="text/babel">
-        //type="text/babel"
+    <script type="text/babel">@*需要JSX转换成js文件*@
+        //type="text/babel"     @*class里面UserGist，需要开头字母大写，否则预编译不通过*@
+        @*extends是继承子类，其次React.Component是提供组件*@
+
         class UserGist extends React.Component {
         constructor(props) {
-        super(props);
+        super(props);@*super是指向调用父类*@
         //在state设置两个属性，以便后续通过state对象来对其进行修改
-        this.state = {List:[]};
+        this.state = {List:[]};@*this可以调用其父类*@
         //绑定挂载事件
         this.componentDidMount = this.componentDidMount.bind(this);
         }
@@ -51,7 +54,7 @@
         }
         DelUser(index) {
 
-        const insertUser = "https://localhost:44343/api/PLSt/Delete?id=" +index
+        const insertUser = "https://localhost:44343/api/LDK/Del?id=" +index
         fetch(insertUser, { method: "post" }
         )
         .then(response => response.json())
@@ -61,7 +64,7 @@
         List: this.state.List
         })
         if (data > 0) {
-        window.location.href = "https://localhost:44332/PLStMVC/Index";
+        window.location.href = "https://localhost:44332/LDK/Show";
         }
 
 
@@ -80,18 +83,18 @@
 
         //添加按钮跳转事件
         AddReact() {
-        window.location.href = "https://localhost:44332/PLStMVC/Add";
+        window.location.href = "https://localhost:44332/LDK/Add";
         }
 
         //修改按钮点击跳转事件
         UptUser(id){
-        window.location.href = "https://localhost:44332/PLStMVC/Update?id="+id;
+        window.location.href = "https://localhost:44332/LDK/Update?id="+id;
         }
 
         //查询按钮点击事件
         CxReact()
         {
-        const insertUser = "https://localhost:44343/api/PLSt/Gets?Pname=" +this.pname.value
+        const insertUser = "https://localhost:44343/api/LDK/Show?name=" +this.name.value
         fetch(insertUser, { method: "post" }
         )
         .then(response => response.json())
@@ -101,7 +104,7 @@
         List: data
         })
         //if (data > 0) {
-        //    window.location.href = "https://localhost:44332/PLStMVC/Index";
+        //    window.location.href = "https://localhost:44332/LDK/Show";
         //}
 
 
@@ -114,20 +117,20 @@
         <div>
             <button onClick={this.AddReact.bind(this)}>
                 添加
-            </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </button>
             操作人名称是:
-            <input type="text" id="pname" name="pname" ref={pname => this.pname = pname} />
+            <input type="text" id="name" name="name" ref={name => this.name = name} />
             <button onClick={this.CxReact.bind(this)}>
                 查询
-            </button>
+            </button>...
             <table className="table table-bordered">
                 <thead>
                     <tr>
-                        <td>主键Id</td>
+
                         <td>姓名</td>
                         <td>性别</td>
-                        <td>身份编号</td>
-                        <td>联系电话</td>
+                        <td>年龄</td>
+
                         <td>操作</td>
                     </tr>
                 </thead>
@@ -138,12 +141,11 @@
                     return (
 
                     <tr key={index}>
-                        <td>{item.pid}</td>
-                        <td>{item.pname}</td>
-                        <td>{item.psex}</td>
-                        <td>{item.phao}</td>
-                        <td>{item.ptele}</td>
-                        <td><button onClick={this.DelUser.bind(this,item.pid)}>删除</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onClick={this.UptUser.bind(this,item.pid)}>修改</button></td>
+
+                        <td>{item.name}</td>
+                        <td>{item.sex}</td>
+                        <td>{item.age}</td>
+                        <td><button onClick={this.DelUser.bind(this,item.lId)}>删除</button><button onClick={this.UptUser.bind(this,item.Id)}>修改</button></td>
                     </tr>
 
                     )
@@ -155,17 +157,18 @@
             </table>
 
             @*{this.state.date[0].userName} 用户最新的 Gist 共享地址：
-        <a href={this.state.lastGistUrl} rel="nofollow">{this.state.lastGistUrl}</a>*@
+                <a href={this.state.lastGistUrl} rel="nofollow">{this.state.lastGistUrl}</a>*@
         </div>
         );
         }
         }
 
         ReactDOM.render(
-        <UserGist source="https://localhost:44343/api/PLSt/Get" />,
+        <UserGist source="https://localhost:44343/api/LDK/Show" />,@*//程序员自定义编写的控件*@
         document.getElementById('example')
         );
     </script>
 
 </body>
 </html>
+
