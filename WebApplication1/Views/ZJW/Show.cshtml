@@ -1,0 +1,120 @@
+﻿
+@{
+    ViewData["Title"] = "Show";
+}
+<script src="~/layui-v2.5.6/layui/layui.all.js"></script>
+<link href="~/layui-v2.5.6/layui/css/layui.css" rel="stylesheet" />
+<script src="~/js/vue.js"></script>
+<script src="~/js/axios.js"></script>
+<div id="app">
+    <table>
+        <thead>
+            <tr>
+                <th>货物信息管理</th>
+            </tr>
+        </thead>
+    </table>
+    <table class="layui-table" lay-even="" lay-skin="nob">
+        <tr>
+            <td>发货时间</td>
+            <td><input id="Text1" type="date" v-model="st" class="form-control" /></td>
+            <td>-</td>
+            <td>到货时间</td>
+            <td><input id="Text1" type="date" v-model="et" class="form-control" /></td>
+            <td><input id="Text1" type="text" v-model="name" lay-verify="required" class="layui-input" placeholder="根据货物名称查询" /></td>
+            <td>
+                <button type="button" class="layui-btn layui-btn-radius" v-on:click="Show"><i class="layui-icon layui-icon-search"></i></button>
+            </td>
+        </tr>
+    </table>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <td>货物名称</td>
+                <td>货物类型</td>
+                <td>生产厂家</td>
+                <td>货物价格</td>
+                <td>运输方式</td>
+                <td>发货时间</td>
+                <td>到货时间</td>
+                <td>目的地</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+        <tbody v-for="item in emps">
+            <tr>
+                <td>{{item.pname}}</td>
+                <td>{{item.ptype}}</td>
+                <td>{{item.pcompany}}</td>
+                <td>{{item.price}}</td>
+                <td>{{item.pkuaidi}}</td>
+                <td>{{item.psendtime}}</td>
+                <td>{{item.prectime}}</td>
+                <td>{{item.pdest}}</td>
+                <td>
+                    <input id="Button1" class="btn btn-default" data-dismiss="modal" type="button" value="删除" v-on:click="Del(item.pid)" />
+                    <input id="Button1" class="btn btn-default" data-dismiss="modal" type="button" value="修改" v-on:click="Update(item.pid)" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <input id="Button1" type="button" value="添加货物信息" v-on:click="AddProduct()" class="layui-btn layui-btn-radius" />
+</div>
+
+<script type="text/javascript">
+    new Vue({
+        el: "#app",
+        data: {
+            emps: "",
+            st: "",
+            et: "",
+            name:""
+        },
+        mounted() {
+            this.Show();
+        },
+        methods: {
+            Show: function () {
+                var ch = this;
+                axios
+                    .get('https://localhost:44343/api/ZJW/Show', {
+                        params: {
+                            name: ch.name,
+                            sj: ch.st,
+                            js: ch.et,
+                        }
+                    })
+                    .then(function (i) {
+                        ch.emps = i.data;
+                    }).catch(function (error) {
+                        console.log(error);
+                    })
+            },
+            Del: function (id) {
+                if (confirm('确定要删除嘛?')) {
+                    axios
+                        .delete('https://localhost:44343/api/ZJW/Del?id=' + id)
+                        .then(function (i) {
+                            if (i < 0) {
+                                alert('删除失败!!');
+
+                            }
+                            else {
+                                alert('删除成功');
+                                location.href = '/ZJW/Show';
+                            }
+                        })
+                }
+            },
+            AddProduct: function () {
+                location.href = '/ZJW/Add';
+            },
+            Update: function (id) {
+                location.href = '/ZJW/Update';
+                sessionStorage.setItem("pid", id);
+            }
+
+        }
+    })
+</script>
+

@@ -1,0 +1,128 @@
+﻿
+@{
+    ViewData["Title"] = "Update";
+}
+<script src="~/layui-v2.5.6/layui/layui.all.js"></script>
+<link href="~/layui-v2.5.6/layui/css/layui.css" rel="stylesheet" />
+<script src="~/js/vue.js"></script>
+<script src="~/js/axios.js"></script>
+
+<div id="fan">
+    <table class="table table-bordered">
+        <tr>
+            <td>货物名称:</td>
+            <td><input id="txtName" type="text" /></td>
+        </tr>
+        <tr>
+            <td>货物类型:</td>
+            <td><input id="txtType" type="text" /></td>
+        </tr>
+        <tr>
+            <td>生产厂家:</td>
+            <td><input id="txtConmpany" type="text" /></td>
+        </tr>
+        <tr>
+            <td>货物价格:</td>
+            <td><input id="txtPrice" type="text" /></td>
+        </tr>
+        <tr>
+            <td>配送方式:</td>
+            <td><input id="txtKuaidi" type="text" /></td>
+        </tr>
+        @*<tr>
+                <td>发货时间:</td>
+                <td><input id="txtSendtime" type="date" /></td>
+            </tr>
+            <tr>
+                <td>到货时间:</td>
+                <td><input id="txtRectime" type="date" /></td>*@
+        <tr>
+            <td>目的地:</td>
+            <td><input id="txtDest" type="text" /></td>
+        </tr>
+        <tr>
+            <td><input id="Button1" type="button" value="提交"  class="layui-btn layui-btn-radius"  v-on:click="Update()" /></td>
+            <td></td>
+        </tr>
+    </table>
+
+</div>
+
+@section scripts{
+    <script>
+        var fan = new Vue({
+            el: "#fan",
+            data: {
+                id: sessionStorage.getItem("pid"),
+                txtName: "",
+                txtType: "",
+                txtConmpany: "",
+                txtPrice: "",
+                txtKuaidi: "",
+                //txtSendtime: "",
+                //txtRectime: "",
+                txtDest: "",
+            },
+            mounted() {
+                this.Fan();
+            },
+            methods: {
+                Fan: function () {
+                    var f = this;
+                    var id = f.id;
+                    axios
+                        .get('https://localhost:44343/api/ZJW/Fan?id=' + id)
+                        .then(function (i) {
+
+                            $("#txtName").val(i.data[0].pname);
+                            $("#txtType").val(i.data[0].ptype);
+                            $("#txtConmpany").val(i.data[0].pcompany);
+                            $("#txtPrice").val(i.data[0].price);
+                            $("#txtKuaidi").val(i.data[0].pkuaidi);
+                            //$("#txtSendtime").text(i.data[0].psendtime);
+                            //$("#txtRectime").text(i.data[0].prectime);
+                            $("#txtDest").val(i.data[0].pdest);
+                        })
+                },
+                Update: function () {
+                    var h = this;
+                    var pid = h.id;
+                    var name = $("#txtName").val();
+                    var type = $("#txtType").val();
+                    var conmpany = $("#txtConmpany").val();
+                    var price = $("#txtPrice").val();
+                    var kuaidi = $("#txtKuaidi").val();
+                    //var sendtime = $("#txtSendtime").text();
+                    //var rectime = $("#txtRectime").text();
+                    var dest = $("#txtDest").val();
+                    axios
+                        .get('https://localhost:44343/api/ZJW/Update',
+                            {
+                                params: {
+                                    id: pid,
+                                    name: name,
+                                    type: type,
+                                    company: conmpany,
+                                    price: price,
+                                    kuaidi: kuaidi,
+                                    //sendtime: sendtime,
+                                    //rectime: rectime,
+                                    dest: dest,
+                                }
+                            })
+                        .then(function (i) {
+                            h.a = parseInt(i.data);
+                            if (h.a > 0) {
+                                alert("修改成功!");
+                                location.href = '/ZJW/Show';
+                            }
+                            else {
+                                alert("修改失败!");
+                            }
+                        })
+
+                }
+            }
+        })
+    </script>
+}

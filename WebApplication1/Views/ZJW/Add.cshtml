@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewData["Title"] = "Add";
+}
+<script src="~/layui-v2.5.6/layui/layui.all.js"></script>
+<link href="~/layui-v2.5.6/layui/css/layui.css" rel="stylesheet" />
+<script src="~/js/vue.js"></script>
+<script src="~/js/axios.js"></script>
+<div id="Insert">
+
+    <table class="table table-bordered">
+        <tr>
+            <td>货物名称:</td>
+            <td><input v-model="txtName" type="text" /></td>
+        </tr>
+        <tr>
+            <td>货物类型:</td>
+            <td><input v-model="txtType" type="text" /></td>
+        </tr>
+        <tr>
+            <td>生产厂家:</td>
+            <td><input v-model="txtConmpany" type="text" /></td>
+        </tr>
+        <tr>
+            <td>货物价格:</td>
+            <td><input v-model="txtPrice" type="text" /></td>
+        </tr>
+        <tr>
+            <td>配送方式:</td>
+            <td><input v-model="txtKuaidi" type="text" /></td>
+        </tr>
+        <tr>
+            <td>发货时间:</td>
+            <td><input v-model="txtSendtime" type="date" /></td>
+        </tr>
+        <tr>
+            <td>到货时间:</td>
+            <td><input v-model="txtRectime" type="date" /></td>
+        <tr>
+            <td>目的地:</td>
+            <td><input v-model="txtDest" type="text" /></td>
+        </tr>
+        <tr>
+            <td><input id="Button1" type="button" value="提交" class="layui-btn layui-btn-radius" v-on:click="AddProduct()" /></td>
+            <td></td>
+        </tr>
+    </table>
+</div>
+
+@section scripts{
+    <script>
+        var add = new Vue({
+            el: "#Insert",
+            data: {
+                txtName: "",
+                txtType: "",
+                txtConmpany: "",
+                txtPrice: "",
+                txtKuaidi: "",
+                txtSendtime: "",
+                txtRectime: "",
+                txtDest: "",
+            },
+            methods: {
+                AddProduct: function () {
+                    var sh = this;
+                    var name = sh.txtName;
+                    var type = sh.txtType;
+                    var conmpany = sh.txtConmpany;
+                    var price = sh.txtPrice;
+                    var kuaidi = sh.txtKuaidi;
+                    var sendtime = sh.txtSendtime;
+                    var rectime = sh.txtRectime;
+                    var dest = sh.txtDest;
+                    axios
+                        .get('https://localhost:44343/api/ZJW/Add', {
+                            params: {
+                                name: name,
+                                type: type,
+                                company: conmpany,
+                                price: price,
+                                kuaidi: kuaidi,
+                                sendtime: sendtime,
+                                rectime: rectime,
+                                dest: dest,
+                            }
+                        })
+                        .then(function (i) {
+                            sh.a = parseInt(i.data);
+                            if (sh.a > 0) {
+                                alert("添加成功!");
+                                location.href = '/ZJW/Show';
+                            }
+                            else {
+                                alert("添加失败!");
+                                return;
+                            }
+                        })
+
+                },
+            }
+        })
+    </script>
+
+}
+
