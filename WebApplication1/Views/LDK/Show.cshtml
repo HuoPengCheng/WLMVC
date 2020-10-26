@@ -1,0 +1,172 @@
+﻿
+@{
+    ViewData["Title"] = "Show";
+}
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>React 代码实现</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+
+    <div id="example"></div>
+
+    <script type="text/babel">
+        //type="text/babel"
+        class UserGist extends React.Component {
+        constructor(props) {
+        super(props);
+        //在state设置两个属性，以便后续通过state对象来对其进行修改
+        this.state = {List:[]};
+        //绑定挂载事件
+        this.componentDidMount = this.componentDidMount.bind(this);
+        }
+
+        componentDidMount() {
+        //接下来操作state时上下文对象发生改变，此处拿到操作句柄
+        var that = this;
+        //ajax请求
+        this.serverRequest = $.ajax({
+        url: this.props.source,
+        type:"GET",
+        dataType:'json',
+        success: function (result) {
+        console.log(result);
+
+        var lastGist = result;
+        //此处的上下文发生改变，this的指针指向发生了变化，通过上述定义的that来操作
+        that.setState({
+        List: result,
+        })
+        }
+        })
+        }
+        DelUser(index) {
+
+        const insertUser = "https://localhost:44343/api/LDK/Del?id=" +index
+        fetch(insertUser, { method: "post" }
+        )
+        .then(response => response.json())
+        .then(data => {
+        console.log(data)
+        this.setState({
+        List: this.state.List
+        })
+        if (data > 0) {
+        window.location.href = "https://localhost:44332/LDK/Show";
+        }
+
+
+
+        })
+        }
+
+        //卸载React组件时，把多余请求关闭，以免影响其他框架或组件的操作
+        componentWillUnmount() {
+        this.serverRequest.abort();
+        }
+
+
+
+
+
+        //添加按钮跳转事件
+        AddReact() {
+        window.location.href = "https://localhost:44332/LDK/Add";
+        }
+
+        //修改按钮点击跳转事件
+        UptUser(id){
+        window.location.href = "https://localhost:44332/LDK/Update?id="+id;
+        }
+
+        //查询按钮点击事件
+        CxReact()
+        {
+        const insertUser = "https://localhost:44343/api/LDK/Show?name=" +this.name.value
+        fetch(insertUser, { method: "post" }
+        )
+        .then(response => response.json())
+        .then(data => {
+        console.log(data)
+        this.setState({
+        List: data
+        })
+        //if (data > 0) {
+        //    window.location.href = "https://localhost:44332/LDK/Show";
+        //}
+
+
+
+        })
+        }
+
+        render() {
+        return (
+        <div>
+            <button onClick={this.AddReact.bind(this)}>
+                添加
+            </button>
+            操作人名称是:
+            <input type="text" id="name" name="name" ref={name => this.name = name} />
+            <button onClick={this.CxReact.bind(this)}>
+                查询
+            </button>...
+            <table className="table table-bordered">
+                <thead>
+                    <tr>
+                        <td>主键Id</td>
+                        <td>姓名</td>
+                        <td>性别</td>
+                        <td>年龄</td>
+
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+
+                    this.state.List.map((item,index) => {
+                    return (
+
+                    <tr key={index}>
+                        <td>{item.lId}</td>
+                        <td>{item.name}</td>
+                        <td>{item.sex}</td>
+                        <td>{item.age}</td>
+                        <td><button onClick={this.DelUser.bind(this,item.lId)}>删除</button><button onClick={this.UptUser.bind(this,item.lId)}>修改</button></td>
+                    </tr>
+
+                    )
+                    }
+                    )
+
+                    }
+                </tbody>
+            </table>
+
+            @*{this.state.date[0].userName} 用户最新的 Gist 共享地址：
+            <a href={this.state.lastGistUrl} rel="nofollow">{this.state.lastGistUrl}</a>*@
+        </div>
+        );
+        }
+        }
+
+        ReactDOM.render(
+        <UserGist source="https://localhost:44343/api/LDK/Show" />,@*//程序员自定义编写的控件*@
+        document.getElementById('example')@*//所有的数据都存放这Example中控件显示未知节点的ID*@
+        );
+    </script>
+
+</body>
+</html>
+

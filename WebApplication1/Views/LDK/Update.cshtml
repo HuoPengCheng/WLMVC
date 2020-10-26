@@ -1,0 +1,115 @@
+﻿
+@{
+    ViewData["Title"] = "Update";
+}
+
+<h1>Update</h1>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/2.1.4/jquery.min.js"></script>
+    <script src="~/layui-v2.5.6/layui/layui.js"></script>
+    <link href="~/layui-v2.5.6/layui/css/layui.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="cun"></div>
+    <script type="text/babel">
+        //type="text/babel"
+        class CrudComponent extends React.Component{
+        constructor(props){
+        super(props)
+        this.state={
+        list:[]
+        }
+        }
+
+        //反填
+        componentDidMount() {
+        //接下来操作state时上下文对象发生改变，此处拿到操作句柄
+        var that = this;
+        //ajax请求
+        this.serverRequest = $.ajax({
+        url: this.props.source+"?id="+@ViewBag.pid,
+        type:"post",
+        dataType:'json',
+        success: function (result) {
+        console.log(result);
+        var lastGist = result;
+        $("#pname").val(result.pname);
+        $("#psex").val(result.psex);
+        $("#phao").val(result.phao);
+        $("#ptele").val(result.ptele);
+        //此处的上下文发生改变，this的指针指向发生了变化，通过上述定义的that来操作
+        that.setState({
+        list: result,
+        })
+        }
+        })
+        }
+
+
+        UptUser(){
+
+        const insertUser = "https://localhost:44343/api/LDK/Update?Name="+this.name.value+"&Sex="+this.sex.value+"&Age="+this.age.value+"&LId="+@ViewBag.lid
+        fetch(insertUser,{method:"post"})
+        .then(response=>response.json())
+        .then(data=>{
+        console.log(data)
+        if (data>0) {
+        window.location.href = "https://localhost:44332/LDK/Show";
+        }
+        })
+
+
+        }
+
+
+        render(){
+        return (
+        <div>
+            <fieldset className="layui-elem-field">
+                <legend></legend>
+                <div className="layui-field-box">
+                    <div className="layui-row layui-col-space2">
+                        <div className="layui-col-md2">
+                            <label>姓名</label>    <input type="text" id="name" name="name" required lay-verify="required" placeholder="姓名" className="layui-input" ref={name => this.name = name} />
+                        </div>
+                        <div className="layui-col-md2">
+                            <label>性别</label>    <input type="text" id="sex" name="sex" required lay-verify="required" placeholder="性别" className="layui-input" ref={sex => this.sex = sex} />
+                        </div>
+                        <div className="layui-col-md2">
+                            <label>年龄</label>    <input type="text" id="age" name="age" required lay-verify="required" placeholder="身份编号" className="layui-input" ref={age => this.age = age} />
+                        </div>
+                    
+
+                        <hr className="layui-bg-green" />
+
+
+
+                        <div className="layui-col-md1">
+                            <button id="btn2" className="layui-btn" onClick={this.UptUser.bind(this)}>
+                                修改
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        )
+        }
+        }
+        ReactDOM.render(
+        <CrudComponent source="https://localhost:44343/api/LDK/update" />,document.getElementById("cun"))
+    </script>
+</body>
+</html>
+
+
+
