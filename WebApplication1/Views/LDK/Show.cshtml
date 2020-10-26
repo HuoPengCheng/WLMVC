@@ -124,7 +124,7 @@
             <table className="table table-bordered">
                 <thead>
                     <tr>
-                        <td>主键Id</td>
+                        
                         <td>姓名</td>
                         <td>性别</td>
                         <td>年龄</td>
@@ -139,11 +139,11 @@
                     return (
 
                     <tr key={index}>
-                        <td>{item.lId}</td>
+                        
                         <td>{item.name}</td>
                         <td>{item.sex}</td>
                         <td>{item.age}</td>
-                        <td><button onClick={this.DelUser.bind(this,item.lId)}>删除</button><button onClick={this.UptUser.bind(this,item.lId)}>修改</button></td>
+                        <td><button onClick={this.DelUser.bind(this,item.lId)}>删除</button><button onClick={this.UptUser.bind(this,item.Id)}>修改</button></td>
                     </tr>
 
                     )

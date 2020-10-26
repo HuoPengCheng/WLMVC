@@ -56,8 +56,8 @@
 
 
         UptUser(){
-
-        const insertUser = "https://localhost:44343/api/LDK/Update?Name="+this.name.value+"&Sex="+this.sex.value+"&Age="+this.age.value+"&LId="+@ViewBag.lid
+        
+        const insertUser = "https://localhost:44343/api/LDK/Update?name="+this.name.value+"&sex="+this.sex.value+"&age="+this.age.value+"&id="+9
         fetch(insertUser,{method:"post"})
         .then(response=>response.json())
         .then(data=>{
@@ -87,7 +87,7 @@
                         <div className="layui-col-md2">
                             <label>年龄</label>    <input type="text" id="age" name="age" required lay-verify="required" placeholder="身份编号" className="layui-input" ref={age => this.age = age} />
                         </div>
-                    
+
 
                         <hr className="layui-bg-green" />
 
@@ -106,7 +106,7 @@
         }
         }
         ReactDOM.render(
-        <CrudComponent source="https://localhost:44343/api/LDK/update" />,document.getElementById("cun"))
+        <CrudComponent source="https://localhost:44343/api/LDK/Fan" />,document.getElementById("cun"))
     </script>
 </body>
 </html>
